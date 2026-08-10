@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Clock, BookOpen, Shield, ChevronRight, Terminal } from "lucide-react";
+import { Clock, BookOpen, Shield, ChevronRight } from "lucide-react";
 
 export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
   const getLevelBadge = (level) => {
@@ -33,7 +33,7 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
       <div
         className={`absolute -top-4 -left-4 w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
           isActive
-            ? "bg-red-500 text-white shadow-lg shadow-red-500/40 scale-110"
+            ? "bg-red-500 text-white shadow-lg shadow-red-500/30 scale-110"
             : "bg-slate-400 text-white"
         }`}
       >
@@ -81,23 +81,22 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
         </div>
       </div>
 
-      {/* Inspect Button on Active Card */}
+      {/* Simple View Details Button on Active Card */}
       {isActive && (
         <motion.div
-          initial={{ opacity: 0, y: 6 }}
+          initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between"
+          className="mt-4 pt-3 border-t border-slate-100"
         >
           <button
             onClick={(e) => {
               e.stopPropagation();
               onOpenModal(module);
             }}
-            className="w-full py-2 px-3 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl text-xs font-semibold text-red-600 flex items-center justify-center gap-2 transition-all group"
+            className="w-full py-1.5 px-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 flex items-center justify-center gap-1.5 transition-all group"
           >
-            <Terminal className="w-3.5 h-3.5 text-red-600" />
-            <span>INSPECT SYLLABUS & LABS</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            <span>View Syllabus</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </motion.div>
       )}
