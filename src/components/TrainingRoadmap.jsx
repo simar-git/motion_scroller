@@ -282,7 +282,7 @@ export default function TrainingRoadmap() {
 
   // Robot coordinates & tilt angle transforms
   const robotX = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).x - 22);
-  const robotY = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).y - 65);
+  const robotY = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).y - 25);
   const robotAngle = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).angle);
 
   const [currentAngle, setCurrentAngle] = useState(0);
