@@ -1,163 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import ModuleCard from "./ModuleCard";
 import CyberMascot from "./CyberMascot";
 import ModuleDetailModal from "./ModuleDetailModal";
-
-export const modulesData = [
-  {
-    id: 1,
-    code: "MODULE 01",
-    title: "Reconnaissance & OSINT",
-    level: "Beginner",
-    description: "Passive and active OSINT, footprinting, and attack surface mapping.",
-    duration: "5h",
-    labsCount: 4,
-    skillsCount: 2,
-    x: 350,
-    y: 280,
-    topics: [
-      "Subdomain & Asset Enumeration",
-      "Passive DNS & Certificate Transparency",
-      "Shodan, Censys & Google Dorking",
-      "Social Engineering & Metadata Extraction"
-    ],
-    labs: [
-      { id: "lab-101", title: "Target Asset Surface Discovery", difficulty: "Easy", duration: "45m" },
-      { id: "lab-102", title: "Automated Subdomain Bruteforcing", difficulty: "Easy", duration: "60m" },
-      { id: "lab-103", title: "Exploiting Exposed Cloud Storage & S3 Buckets", difficulty: "Medium", duration: "90m" },
-      { id: "lab-104", title: "OSINT Threat Intelligence Mapping", difficulty: "Medium", duration: "60m" }
-    ]
-  },
-  {
-    id: 2,
-    code: "MODULE 02",
-    title: "Network Discovery & Vulnerability Assessment",
-    level: "Intermediate",
-    description: "Port scanning, service enumeration, and automated vulnerability scanning.",
-    duration: "6h",
-    labsCount: 5,
-    skillsCount: 3,
-    x: 950,
-    y: 340,
-    topics: [
-      "Nmap Scripting Engine (NSE) & Stealth Scans",
-      "Masscan High-Speed Network Recon",
-      "Service Fingerprinting & Version Detection",
-      "Automated Vulnerability Assessment with Nessus"
-    ],
-    labs: [
-      { id: "lab-201", title: "Evasion Techniques in Nmap Scanning", difficulty: "Medium", duration: "60m" },
-      { id: "lab-202", title: "SMB & Active Directory Reconnaissance", difficulty: "Medium", duration: "75m" },
-      { id: "lab-203", title: "Custom NSE Script Development", difficulty: "Hard", duration: "90m" },
-      { id: "lab-204", title: "Vulnerability Scanning & CVSS Scoring", difficulty: "Medium", duration: "60m" },
-      { id: "lab-205", title: "Network Service Enumeration", difficulty: "Medium", duration: "75m" }
-    ]
-  },
-  {
-    id: 3,
-    code: "MODULE 03",
-    title: "Exploitation & Post-Exploitation",
-    level: "Intermediate",
-    description: "Exploit execution, payload delivery, privilege escalation, and lateral movement.",
-    duration: "7h",
-    labsCount: 4,
-    skillsCount: 2,
-    x: 1550,
-    y: 270,
-    topics: [
-      "Metasploit & Custom Exploit Crafting",
-      "Linux & Windows Local Privilege Escalation",
-      "Credential Harvesting & Password Cracking",
-      "Pivot Techniques & SSH Tunneling"
-    ],
-    labs: [
-      { id: "lab-301", title: "Buffer Overflow & Memory Exploitation", difficulty: "Hard", duration: "120m" },
-      { id: "lab-302", title: "Linux Kernel & SUID Exploitation", difficulty: "Medium", duration: "90m" },
-      { id: "lab-303", title: "Windows Token Impersonation & Potato Attacks", difficulty: "Hard", duration: "105m" },
-      { id: "lab-304", title: "Pivoting Through Multi-Homed Hosts", difficulty: "Hard", duration: "105m" }
-    ]
-  },
-  {
-    id: 4,
-    code: "MODULE 04",
-    title: "Cloud Security & Container Hacking",
-    level: "Advanced",
-    description: "AWS IAM misconfigurations, Docker breakouts, and Kubernetes cluster compromise.",
-    duration: "8h",
-    labsCount: 6,
-    skillsCount: 4,
-    x: 2150,
-    y: 340,
-    topics: [
-      "AWS IAM Policy Misconfigurations & Privilege Escalation",
-      "Docker Socket Hijacking & Container Escapes",
-      "Kubernetes API Exploitation & RBAC Bypass",
-      "Cloud Infrastructure as Code (IaC) Auditing"
-    ],
-    labs: [
-      { id: "lab-401", title: "AWS IAM Policy Escalation Chains", difficulty: "Hard", duration: "90m" },
-      { id: "lab-402", title: "Docker Socket Container Breakout", difficulty: "Hard", duration: "90m" },
-      { id: "lab-403", title: "Kubernetes Secret Extraction & Pod Compromise", difficulty: "Hard", duration: "120m" },
-      { id: "lab-404", title: "CloudTrail Evasion & Anti-Forensics", difficulty: "Hard", duration: "90m" },
-      { id: "lab-405", title: "Terraform Misconfiguration Exploitation", difficulty: "Medium", duration: "60m" },
-      { id: "lab-406", title: "Serverless Lambda Function Injection", difficulty: "Medium", duration: "75m" }
-    ]
-  },
-  {
-    id: 5,
-    code: "MODULE 05",
-    title: "AI & LLM Vulnerability Assessment",
-    level: "Advanced",
-    description: "Indirect prompt injection, RAG poisoning, model inversion, and jailbreaking tactics.",
-    duration: "6h",
-    labsCount: 5,
-    skillsCount: 3,
-    x: 2750,
-    y: 270,
-    topics: [
-      "Direct & Indirect Prompt Injection Attacks",
-      "Retrieval-Augmented Generation (RAG) Vector Poisoning",
-      "AI Agent Tool Hijacking & Remote Code Execution",
-      "Model Inversion & System Prompt Extraction"
-    ],
-    labs: [
-      { id: "lab-501", title: "Indirect Prompt Injection via Web Scraping", difficulty: "Medium", duration: "60m" },
-      { id: "lab-502", title: "Poisoning Vector Databases in RAG Pipelines", difficulty: "Hard", duration: "90m" },
-      { id: "lab-503", title: "Hijacking LLM Agent Function Calls", difficulty: "Hard", duration: "90m" },
-      { id: "lab-504", title: "Bypassing Guardrails via Multi-turn Jailbreaks", difficulty: "Medium", duration: "60m" },
-      { id: "lab-505", title: "Model Inversion & System Prompt Extraction", difficulty: "Medium", duration: "60m" }
-    ]
-  },
-  {
-    id: 6,
-    code: "MODULE 06",
-    title: "Red Team Adversarial Operations",
-    level: "Expert",
-    description: "Multi-stage enterprise attack chain, C2 infrastructure, and active directory takeover.",
-    duration: "10h",
-    labsCount: 8,
-    skillsCount: 5,
-    x: 3350,
-    y: 340,
-    topics: [
-      "Command & Control (C2) Infrastructure Setup",
-      "Active Directory Kerberoasting & AS-REP Roasting",
-      "EDR Evasion & Process Hollowing",
-      "Golden Ticket & Persistence Mechanics"
-    ],
-    labs: [
-      { id: "lab-601", title: "C2 Infrastructure Malleable Profile Design", difficulty: "Hard", duration: "90m" },
-      { id: "lab-602", title: "Active Directory Domain Escalation", difficulty: "Hard", duration: "120m" },
-      { id: "lab-603", title: "Bypassing Endpoint Detection & Response (EDR)", difficulty: "Expert", duration: "150m" },
-      { id: "lab-604", title: "Golden & Silver Ticket Forgery", difficulty: "Hard", duration: "90m" },
-      { id: "lab-605", title: "Kerberoasting & Offline Hash Cat Cracking", difficulty: "Medium", duration: "60m" },
-      { id: "lab-606", title: "NTLM Relay & AD CS Certificate Abuse", difficulty: "Expert", duration: "120m" },
-      { id: "lab-607", title: "DLL Side-Loading & Process Injection", difficulty: "Hard", duration: "90m" },
-      { id: "lab-608", title: "Final Enterprise Red Team Assessment", difficulty: "Expert", duration: "240m" }
-    ]
-  }
-];
 
 // Helper to calculate (x, y, angle) on cubic Bezier curve at progress t [0, 1]
 function getBezierPointAt(t, modules) {
@@ -172,10 +17,10 @@ function getBezierPointAt(t, modules) {
 
   const p0 = modules[i];
   const p1 = modules[i + 1];
-  const dx = (p1.x - p0.x) / 2;
+  const halfDx = (p1.x - p0.x) / 2;
 
-  const c1 = { x: p0.x + dx, y: p0.y };
-  const c2 = { x: p0.x + dx, y: p1.y };
+  const c1 = { x: p0.x + halfDx, y: p0.y };
+  const c2 = { x: p0.x + halfDx, y: p1.y };
 
   const invU = 1 - u;
   const invU2 = invU * invU;
@@ -193,18 +38,25 @@ function getBezierPointAt(t, modules) {
   return { x, y, angle };
 }
 
-export default function TrainingRoadmap() {
+export default function TrainingRoadmap({ track }) {
+  const modulesData = track ? track.modules : [];
   const [activeModuleId, setActiveModuleId] = useState(1);
   const [activeModalModule, setActiveModalModule] = useState(null);
   const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
 
-  // Motion Value for progress
-  const rawProgress = useMotionValue(0);
+  const containerRef = useRef(null);
 
-  // Smooth spring physics for fluid motion
-  const smoothProgress = useSpring(rawProgress, {
-    stiffness: 100,
-    damping: 24,
+  // TRISEC LABS PINNED STICKY SCROLL PATTERN:
+  // Target outer container for vertical scroll progress [0, 1]
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Ultra-Smooth Premium Spring physics for buttery natural page scrolling
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 28,
     restDelta: 0.0001
   });
 
@@ -214,98 +66,84 @@ export default function TrainingRoadmap() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // WHEEL INTERCEPTION: Intercept mouse wheel & trackpad to advance progress horizontally
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (activeModalModule) return;
-
-      e.preventDefault();
-      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      const step = delta / 1800;
-
-      rawProgress.set(Math.max(0, Math.min(1, rawProgress.get() + step)));
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [activeModalModule, rawProgress]);
-
-  // Touch Swipe navigation support
-  const touchStartY = useRef(0);
-  useEffect(() => {
-    const handleTouchStart = (e) => {
-      if (activeModalModule) return;
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      if (activeModalModule) return;
-      e.preventDefault();
-      const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY.current - currentY;
-      touchStartY.current = currentY;
-
-      const step = deltaY / 1200;
-      rawProgress.set(Math.max(0, Math.min(1, rawProgress.get() + step)));
-    };
-
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [activeModalModule, rawProgress]);
-
   // Keyboard Arrow Keys support
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (activeModalModule) return;
 
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        e.preventDefault();
         jumpToModule(Math.min(modulesData.length, activeModuleId + 1));
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        e.preventDefault();
         jumpToModule(Math.max(1, activeModuleId - 1));
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeModuleId, activeModalModule]);
+  }, [activeModuleId, activeModalModule, modulesData.length]);
 
   // Translate canvas to center active module horizontally
   const startX = windowWidth / 2 - 350;
-  const endX = windowWidth / 2 - 3350;
+  const endX = windowWidth / 2 - 3950;
   const translateX = useTransform(smoothProgress, [0, 1], [startX, endX]);
 
-  // Robot coordinates & tilt angle transforms
-  const robotX = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).x - 22);
-  const robotY = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).y - 25);
-  const robotAngle = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).angle);
+  // GRADUAL BACKGROUND & VECTOR PATTERN FADE-OUT: Fades away as Certificate approaches (t = 0.84 -> 0.96)
+  const bgAndMascotOpacity = useTransform(smoothProgress, [0.84, 0.96], [1, 0]);
 
-  const [currentAngle, setCurrentAngle] = useState(0);
+  // SMOOTH HEADER FADE OUT: Top active track heading smoothly fades out (1 -> 0) when Certificate arrives
+  const headerOpacity = useTransform(smoothProgress, [0.82, 0.93], [1, 0]);
+
+  // SMOOTH VERTICAL OFFSET: Shifts certificate to exact middle (-20px)
+  const certificateY = useTransform(smoothProgress, [0.84, 0.96], [0, -20]);
+
+  // HERO ZOOM: Starts at 0.95x tile size and expands smoothly to 1.22x
+  const certificateScale = useTransform(
+    smoothProgress,
+    [0.82, 0.90, 0.97, 1.0],
+    [0.95, 1.05, 1.15, 1.22]
+  );
+
+  // Ultra-Soft Ambient Glowing Shadow that blends seamlessly without harsh cutoffs
+  const certificateShadow = useTransform(
+    smoothProgress,
+    [0.82, 0.90, 0.97, 1.0],
+    [
+      "0px 4px 15px rgba(0, 168, 132, 0.08)",
+      "0px 10px 25px rgba(0, 168, 132, 0.15)",
+      "0px 20px 45px rgba(0, 168, 132, 0.24)",
+      "0px 25px 60px -10px rgba(0, 168, 132, 0.32)"
+    ]
+  );
+
+  // LAPTOP MASCOT COORDINATES: Positioned ON TOP of the top edge of the module cards (y - 48)
+  const robotX = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).x - 24);
+  const robotY = useTransform(smoothProgress, (t) => getBezierPointAt(t, modulesData).y - 48);
 
   useEffect(() => {
-    const unsubAngle = robotAngle.on("change", (latest) => setCurrentAngle(latest));
     const unsubProgress = smoothProgress.on("change", (latest) => {
       const index = Math.min(
         modulesData.length - 1,
         Math.max(0, Math.round(latest * (modulesData.length - 1)))
       );
-      setActiveModuleId(modulesData[index].id);
+      if (modulesData[index]) {
+        setActiveModuleId(modulesData[index].id);
+      }
     });
 
     return () => {
-      unsubAngle();
       unsubProgress();
     };
-  }, [robotAngle, smoothProgress]);
+  }, [smoothProgress, modulesData]);
 
   const jumpToModule = (id) => {
+    if (!containerRef.current) return;
     const targetProgress = (id - 1) / (modulesData.length - 1);
-    rawProgress.set(targetProgress);
+    const containerTop = containerRef.current.offsetTop;
+    const containerHeight = containerRef.current.offsetHeight - window.innerHeight;
+    window.scrollTo({
+      top: containerTop + targetProgress * containerHeight,
+      behavior: "smooth"
+    });
     setActiveModuleId(id);
   };
 
@@ -329,97 +167,140 @@ export default function TrainingRoadmap() {
   };
 
   return (
+    /* Outer Tall Scroll Track Container: Pins section during vertical page scroll */
     <div
-      className="fixed inset-0 w-screen h-screen select-none font-sans overflow-hidden cursor-grab active:cursor-grabbing"
-      style={{
-        backgroundImage: "radial-gradient(at center center, #DBFFF6FA 10%, #FFFFFF 68%)",
-        backgroundSize: "cover"
-      }}
+      ref={containerRef}
+      className="relative w-full h-[320vh] bg-white font-sans"
     >
-      {/* 100% Fixed Viewport Pin - Coder Roots Brand Theme */}
-      <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
-        
-        {/* Draggable & Animatable Canvas */}
+      {/* Sticky Viewport Window: Pins right below top sticky navbar (top-[64px]) */}
+      <div className="sticky top-[64px] w-full h-[calc(100vh-64px)] overflow-hidden flex flex-col justify-between items-center border-t border-b border-slate-100 bg-white">
+
+        {/* Dynamic Vector Pattern Overlay Layer across Entire Viewport */}
         <motion.div
-          style={{ x: translateX }}
-          drag="x"
-          dragConstraints={{ left: endX - 200, right: startX + 200 }}
-          className="absolute w-[3800px] h-[700px] top-[calc(50%-350px)] left-0"
+          style={{ opacity: bgAndMascotOpacity }}
+          className="absolute inset-0 w-full h-full bg-vector-pattern pointer-events-none z-0"
+        />
+
+        {/* Selected Track Active Title & Metrics Header (Always 100% Visible Below Sticky Navbar) */}
+        <motion.div
+          style={{ opacity: headerOpacity }}
+          className="relative z-20 text-center pt-6 sm:pt-8 pb-2 px-4 max-w-3xl mx-auto transition-opacity duration-300 pointer-events-none"
         >
-          {/* SVG Bezier Path Layer */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-            <defs>
-              <linearGradient id="coderrootsGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00A884" stopOpacity="1" />
-                <stop offset="60%" stopColor="#2CBA96" stopOpacity="1" />
-                <stop offset="100%" stopColor="#605BE5" stopOpacity="1" />
-              </linearGradient>
-
-              <filter id="tealGlow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
-
-            {/* Background Dashed Path Line */}
-            <path
-              d={generateSvgPath()}
-              fill="none"
-              stroke="#00A884"
-              strokeWidth="2.5"
-              strokeDasharray="6 6"
-              opacity="0.35"
-            />
-
-            {/* Dynamic Scroll-Driven Animated Coder Roots Teal Path Line */}
-            <motion.path
-              d={generateSvgPath()}
-              fill="none"
-              stroke="url(#coderrootsGlow)"
-              strokeWidth="4"
-              filter="url(#tealGlow)"
-              style={{
-                pathLength: smoothProgress
-              }}
-            />
-          </svg>
-
-          {/* Continuous Flying Robot Mascot along Bezier Curve */}
-          <motion.div
-            style={{
-              x: robotX,
-              y: robotY
-            }}
-            className="absolute z-40 pointer-events-none"
-          >
-            <CyberMascot angle={currentAngle} />
-          </motion.div>
-
-          {/* Module Cards Placed Along the Roadmap */}
-          {modulesData.map((module) => {
-            const isActive = activeModuleId === module.id;
-
-            return (
-              <div
-                key={module.id}
-                style={{
-                  position: "absolute",
-                  left: `${module.x - 175}px`,
-                  top: `${module.y}px`
-                }}
-                className="z-20"
-              >
-                <ModuleCard
-                  module={module}
-                  isActive={isActive}
-                  onClick={() => jumpToModule(module.id)}
-                  onOpenModal={(mod) => setActiveModalModule(mod)}
-                />
-              </div>
-            );
-          })}
+          <h2 className="text-3xl sm:text-4xl font-black text-[#0F172A] tracking-tight mb-2">
+            {track?.title}
+          </h2>
+          <div className="w-24 h-1 bg-[#00A884] rounded-full mx-auto mb-3 shadow-[0_0_12px_rgba(0,168,132,0.6)]" />
+          <div className="flex items-center justify-center gap-5 text-xs sm:text-sm font-semibold text-slate-600">
+            <span><strong className="text-[#0F172A]">{track?.stagesCount}</strong> Stages</span>
+            <span className="text-slate-300">•</span>
+            <span><strong className="text-[#0F172A]">{track?.labsCount}</strong> Labs</span>
+            <span className="text-slate-300">•</span>
+            <span><strong className="text-[#0F172A]">{track?.hoursCount}</strong> Hours</span>
+          </div>
         </motion.div>
 
+        {/* Interactive Scroller Canvas Area */}
+        <div className="relative w-full h-[480px] overflow-visible flex items-center justify-center z-10 my-auto">
+          
+          {/* Draggable & Animatable Canvas */}
+          <motion.div
+            style={{ x: translateX }}
+            drag="x"
+            dragConstraints={{ left: endX - 200, right: startX + 200 }}
+            className="absolute w-[4400px] h-[480px] top-0 left-0"
+          >
+            {/* SVG Bezier Path Layer */}
+            <motion.svg
+              style={{ opacity: bgAndMascotOpacity }}
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+            >
+              <defs>
+                <linearGradient id="coderrootsGreenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#00A884" stopOpacity="1" />
+                  <stop offset="50%" stopColor="#2CBA96" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#10B981" stopOpacity="1" />
+                </linearGradient>
+
+                <filter id="tealGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              {/* Background Dashed Track Line */}
+              <path
+                d={generateSvgPath()}
+                fill="none"
+                stroke="#00A884"
+                strokeWidth="2.5"
+                strokeDasharray="6 6"
+                opacity="0.3"
+              />
+
+              {/* Dynamic Scroll-Driven Animated Pure Green Path Line */}
+              <motion.path
+                d={generateSvgPath()}
+                fill="none"
+                stroke="url(#coderrootsGreenGradient)"
+                strokeWidth="4"
+                filter="url(#tealGlow)"
+                style={{
+                  pathLength: smoothProgress
+                }}
+              />
+            </motion.svg>
+
+            {/* Continuous Floating Laptop Icon along Bezier Curve - PLACED ON TOP OF TILES (z-50) */}
+            <motion.div
+              style={{
+                x: robotX,
+                y: robotY,
+                opacity: bgAndMascotOpacity
+              }}
+              className="absolute z-50 pointer-events-none"
+            >
+              <CyberMascot />
+            </motion.div>
+
+            {/* Module Cards Placed Along the Roadmap */}
+            {modulesData.map((module) => {
+              const isActive = activeModuleId === module.id;
+              const isCert = module.id === 7;
+
+              return (
+                <div
+                  key={module.id}
+                  style={{
+                    position: "absolute",
+                    left: `${module.x - (isCert ? 240 : 185)}px`,
+                    top: `${module.y}px`
+                  }}
+                  className={isCert ? "z-40" : "z-20"}
+                >
+                  <ModuleCard
+                    module={module}
+                    trackTitle={track?.title}
+                    isActive={isActive}
+                    onClick={() => jumpToModule(module.id)}
+                    onOpenModal={(mod) => {
+                      if (!mod.isCertificate && !mod.isForm) {
+                        setActiveModalModule(mod);
+                      }
+                    }}
+                    customScale={isCert ? certificateScale : undefined}
+                    customShadow={isCert ? certificateShadow : undefined}
+                    customOpacity={!isCert ? bgAndMascotOpacity : undefined}
+                    customY={isCert ? certificateY : undefined}
+                  />
+                </div>
+              );
+            })}
+          </motion.div>
+
+        </div>
+
+        {/* Empty Bottom Spacer */}
+        <div className="h-4" />
       </div>
 
       {/* Modal Drawer */}

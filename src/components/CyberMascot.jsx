@@ -1,56 +1,39 @@
 import React from "react";
 
-export default function CyberMascot({ angle = 0 }) {
+export default function CyberMascot() {
   return (
-    <div
-      className="relative flex flex-col items-center select-none"
-      style={{
-        transform: `rotate(${Math.max(-15, Math.min(15, angle))}deg)`,
-        transition: "transform 0.15s ease-out"
-      }}
-    >
-      {/* Coder Roots Simple Robot SVG Mascot */}
+    <div className="relative flex flex-col items-center select-none">
+      {/* Floating Level Laptop Code Icon Mascot */}
       <svg
-        width="44"
-        height="50"
-        viewBox="0 0 64 72"
+        width="48"
+        height="42"
+        viewBox="0 0 64 56"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="drop-shadow-[0_4px_12px_rgba(0,168,132,0.35)]"
+        className="drop-shadow-[0_4px_10px_rgba(0,168,132,0.22)]"
       >
-        {/* Antennas */}
-        <path d="M 32 12 L 32 4" stroke="#00A884" strokeWidth="2.5" strokeLinecap="round" />
-        <circle cx="32" cy="3" r="3" fill="#00A884" />
-
-        {/* Head */}
-        <rect x="14" y="12" width="36" height="26" rx="7" fill="#ffffff" stroke="#00A884" strokeWidth="2.5" />
-
-        {/* Visor */}
-        <rect x="18" y="17" width="28" height="15" rx="5" fill="#0f172a" />
+        {/* Laptop Screen Frame */}
+        <rect x="8" y="4" width="48" height="32" rx="5" fill="#0F172A" stroke="#00A884" strokeWidth="2.5" />
         
-        {/* Glowing Coder Roots Teal Eyes */}
-        <circle cx="26" cy="24" r="3" fill="#2CBA96" />
-        <circle cx="38" cy="24" r="3" fill="#2CBA96" />
-
-        {/* Neck */}
-        <rect x="28" y="38" width="8" height="4" fill="#64748b" />
-
-        {/* Body */}
-        <rect x="16" y="42" width="32" height="22" rx="6" fill="#ffffff" stroke="#00A884" strokeWidth="2.5" />
+        {/* Inner Code Screen */}
+        <rect x="11" y="7" width="42" height="26" rx="3" fill="#090d16" />
         
-        {/* Chest Button */}
-        <circle cx="32" cy="50" r="3" fill="#605BE5" />
+        {/* Terminal Code Lines & Glowing Indicators */}
+        <rect x="15" y="12" width="12" height="2.5" rx="1" fill="#00A884" />
+        <rect x="29" y="12" width="16" height="2.5" rx="1" fill="#2CBA96" />
+        <rect x="15" y="17" width="22" height="2.5" rx="1" fill="#10B981" />
+        <rect x="15" y="22" width="14" height="2.5" rx="1" fill="#00A884" />
+        <rect x="31" y="22" width="10" height="2.5" rx="1" fill="#2CBA96" />
+        <circle cx="47" cy="23" r="1.5" fill="#10B981" />
 
-        {/* Left Arm holding Pad */}
-        <path d="M 16 46 L 9 52 L 14 58" stroke="#00A884" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        <rect x="4" y="50" width="10" height="11" rx="2" fill="#00A884" />
+        {/* Laptop Hinge */}
+        <rect x="26" y="36" width="12" height="3" rx="1" fill="#64748B" />
 
-        {/* Right Arm */}
-        <path d="M 48 46 L 55 52 L 50 58" stroke="#00A884" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        {/* Laptop Keyboard Base */}
+        <path d="M 4 39 C 4 37.5, 6 37, 8 37 L 56 37 C 58 37, 60 37.5, 60 39 L 62 46 C 62 48, 60 49, 57 49 L 7 49 C 4 49, 2 48, 2 46 Z" fill="#FFFFFF" stroke="#00A884" strokeWidth="2" />
 
-        {/* Feet */}
-        <rect x="22" y="64" width="6" height="5" rx="1.5" fill="#64748b" />
-        <rect x="36" y="64" width="6" height="5" rx="1.5" fill="#64748b" />
+        {/* Touchpad */}
+        <rect x="27" y="42" width="10" height="4" rx="1" fill="#F1F5F9" stroke="#00A884" strokeWidth="1" />
       </svg>
     </div>
   );

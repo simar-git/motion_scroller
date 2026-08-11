@@ -1,5 +1,5 @@
-import TrainingRoadmap from "./components/TrainingRoadmap";
+import TechRoadmapsPage from "./components/TechRoadmapsPage";
 
 export default function App() {
-  return <TrainingRoadmap />;
+  return <TechRoadmapsPage />;
 }
