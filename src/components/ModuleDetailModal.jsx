@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Check } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function ModuleDetailModal({ module, onClose }) {
   if (!module) return null;
@@ -17,7 +17,7 @@ export default function ModuleDetailModal({ module, onClose }) {
           className="absolute inset-0 cursor-pointer"
         />
 
-        {/* Ultra-Simple Modal Window */}
+        {/* Coder Roots Styled Minimalist Modal */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -29,14 +29,14 @@ export default function ModuleDetailModal({ module, onClose }) {
           <div className="flex items-start justify-between">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold text-slate-400">
+                <span className="text-xs font-mono font-semibold text-slate-400">
                   {module.code}
                 </span>
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#E6FAF5] text-[#00A884] font-semibold border border-[#00A884]/30">
                   {module.level}
                 </span>
               </div>
-              <h2 className="text-lg font-bold text-slate-900 leading-snug">
+              <h2 className="text-lg font-bold text-[#0F172A] leading-snug">
                 {module.title}
               </h2>
             </div>
@@ -62,7 +62,7 @@ export default function ModuleDetailModal({ module, onClose }) {
             <div className="space-y-1.5">
               {module.topics.map((topic, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs text-slate-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00A884] shrink-0" />
                   <span>{topic}</span>
                 </div>
               ))}
@@ -70,14 +70,14 @@ export default function ModuleDetailModal({ module, onClose }) {
           </div>
 
           {/* Footer Metadata & Action */}
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-            <div className="text-xs text-slate-400">
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <div className="text-xs text-slate-500 font-medium">
               ⏱ {module.duration} • 📖 {module.labsCount} Labs
             </div>
 
             <button
               onClick={onClose}
-              className="px-4 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-medium transition-colors"
+              className="px-4 py-1.5 bg-[#00A884] hover:bg-[#008f70] text-white rounded-lg text-xs font-semibold shadow-md shadow-[#00A884]/20 transition-colors"
             >
               Start Module
             </button>

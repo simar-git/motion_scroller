@@ -198,7 +198,7 @@ export default function TrainingRoadmap() {
   const [activeModalModule, setActiveModalModule] = useState(null);
   const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
 
-  // Raw Motion Value for scroll progress [0, 1]
+  // Motion Value for progress
   const rawProgress = useMotionValue(0);
 
   // Smooth spring physics for fluid motion
@@ -214,10 +214,10 @@ export default function TrainingRoadmap() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Intercept mouse wheel & trackpad to advance/rewind horizontal progress smoothly
+  // WHEEL INTERCEPTION: Intercept mouse wheel & trackpad to advance progress horizontally
   useEffect(() => {
     const handleWheel = (e) => {
-      if (activeModalModule) return; // Allow modal scroll
+      if (activeModalModule) return;
 
       e.preventDefault();
       const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
@@ -309,7 +309,7 @@ export default function TrainingRoadmap() {
     setActiveModuleId(id);
   };
 
-  // SVG Bezier path string
+  // Generate SVG Bezier path string
   const generateSvgPath = () => {
     if (modulesData.length === 0) return "";
     let path = `M ${modulesData[0].x} ${modulesData[0].y}`;
@@ -330,13 +330,13 @@ export default function TrainingRoadmap() {
 
   return (
     <div
-      className="fixed inset-0 w-screen h-screen bg-slate-50 select-none font-sans overflow-hidden cursor-grab active:cursor-grabbing"
+      className="fixed inset-0 w-screen h-screen select-none font-sans overflow-hidden cursor-grab active:cursor-grabbing"
       style={{
-        backgroundImage: "radial-gradient(#cbd5e1 1.2px, transparent 1.2px)",
-        backgroundSize: "40px 40px"
+        backgroundImage: "radial-gradient(at center center, #DBFFF6FA 10%, #FFFFFF 68%)",
+        backgroundSize: "cover"
       }}
     >
-      {/* 100% Fixed Viewport Pin - Clean Light Theme */}
+      {/* 100% Fixed Viewport Pin - Coder Roots Brand Theme */}
       <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
         
         {/* Draggable & Animatable Canvas */}
@@ -348,13 +348,39 @@ export default function TrainingRoadmap() {
         >
           {/* SVG Bezier Path Layer */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-            {/* Background Red Dashed Path Line */}
+            <defs>
+              <linearGradient id="coderrootsGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#00A884" stopOpacity="1" />
+                <stop offset="60%" stopColor="#2CBA96" stopOpacity="1" />
+                <stop offset="100%" stopColor="#605BE5" stopOpacity="1" />
+              </linearGradient>
+
+              <filter id="tealGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            {/* Background Dashed Path Line */}
             <path
               d={generateSvgPath()}
               fill="none"
-              stroke="#ef4444"
-              strokeWidth="3"
+              stroke="#00A884"
+              strokeWidth="2.5"
               strokeDasharray="6 6"
+              opacity="0.35"
+            />
+
+            {/* Dynamic Scroll-Driven Animated Coder Roots Teal Path Line */}
+            <motion.path
+              d={generateSvgPath()}
+              fill="none"
+              stroke="url(#coderrootsGlow)"
+              strokeWidth="4"
+              filter="url(#tealGlow)"
+              style={{
+                pathLength: smoothProgress
+              }}
             />
           </svg>
 

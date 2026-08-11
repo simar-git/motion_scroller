@@ -6,12 +6,12 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
   const getLevelBadge = (level) => {
     switch (level) {
       case "Beginner":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
+        return "bg-[#E6FAF5] text-[#00A884] border-[#00A884]/30";
       case "Intermediate":
-        return "bg-amber-50 text-amber-700 border-amber-200";
+        return "bg-[#EEEDFD] text-[#605BE5] border-[#605BE5]/30";
       case "Advanced":
       case "Expert":
-        return "bg-red-50 text-red-700 border-red-200";
+        return "bg-purple-50 text-purple-700 border-purple-200";
       default:
         return "bg-slate-100 text-slate-700 border-slate-200";
     }
@@ -25,15 +25,15 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       className={`relative w-[350px] p-6 rounded-2xl cursor-pointer transition-all duration-300 ${
         isActive
-          ? "bg-white border-2 border-red-500 shadow-2xl scale-105 z-30"
+          ? "bg-white border-2 border-[#00A884] shadow-[0_8px_25px_rgba(0,168,132,0.22)] scale-105 z-30"
           : "bg-white border border-slate-200 shadow-md hover:border-slate-300 z-10 opacity-90 hover:opacity-100"
       }`}
     >
-      {/* Node Number Badge */}
+      {/* Coder Roots Active Node Number Badge */}
       <div
         className={`absolute -top-4 -left-4 w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
           isActive
-            ? "bg-red-500 text-white shadow-lg shadow-red-500/30 scale-110"
+            ? "bg-[#00A884] text-white shadow-lg shadow-[#00A884]/40 scale-110"
             : "bg-slate-400 text-white"
         }`}
       >
@@ -42,16 +42,16 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
 
       {/* Header Row: Module Code & Level */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">
           {module.code}
         </span>
-        <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${getLevelBadge(module.level)}`}>
+        <span className={`text-xs px-2.5 py-1 rounded-full font-semibold border ${getLevelBadge(module.level)}`}>
           {module.level}
         </span>
       </div>
 
       {/* Main Title */}
-      <h3 className="text-lg font-bold text-slate-900 mb-2 leading-tight">
+      <h3 className="text-lg font-bold text-[#0F172A] mb-2 leading-tight">
         {module.title}
       </h3>
 
@@ -66,22 +66,22 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
       {/* Metadata Icons Row */}
       <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
         <div className="flex items-center gap-1.5">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <Clock className="w-3.5 h-3.5 text-[#00A884]" />
           <span>{module.duration}</span>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+          <BookOpen className="w-3.5 h-3.5 text-[#00A884]" />
           <span>{module.labsCount} Labs</span>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <Shield className="w-3.5 h-3.5 text-slate-400" />
+          <Shield className="w-3.5 h-3.5 text-[#00A884]" />
           <span>{module.skillsCount} Skills</span>
         </div>
       </div>
 
-      {/* Simple View Details Button on Active Card */}
+      {/* Coder Roots Teal Action Button on Active Card */}
       {isActive && (
         <motion.div
           initial={{ opacity: 0, y: 4 }}
@@ -93,10 +93,10 @@ export default function ModuleCard({ module, isActive, onClick, onOpenModal }) {
               e.stopPropagation();
               onOpenModal(module);
             }}
-            className="w-full py-1.5 px-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 flex items-center justify-center gap-1.5 transition-all group"
+            className="w-full py-1.5 px-3 bg-[#E6FAF5] hover:bg-[#D0F7EE] border border-[#00A884]/40 rounded-lg text-xs font-semibold text-[#00A884] flex items-center justify-center gap-1.5 transition-all group"
           >
             <span>View Syllabus</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-3.5 h-3.5 text-[#00A884] group-hover:translate-x-0.5 transition-transform" />
           </button>
         </motion.div>
       )}
